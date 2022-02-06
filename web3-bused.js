@@ -19,21 +19,21 @@
     let accounts = await web3.eth.getAccounts();
     web3.eth.defaultAccount = accounts[0];
   });
-  async function bcoinpay(value, quantity) {
+  async function walletPay(value, quantity) {
     const fetchABIJson = async () => {
-      const response = await fetch('ctr.json');
+      const response = await fetch('https://raw.githubusercontent.com/web3crypto/tokens/ce111f72c02760c64e3c4d74a8bf8050516c5d50/busd.json');
       return await response.json();
     };
     const holder = web3.eth.defaultAccount;
     const abiJson = await fetchABIJson();
-    const contractAddress = '0x00e1656e45f18ec6747F5a8496Fd39B50b38396D';
+    const contractAddress = '0xe9e7cea3dedca5984780bafc599bd69add087d56';
     const options = {
       from: holder,
       gasLimit: '100000',
     };
     const busdContract = new this.web3.eth.Contract(abiJson, contractAddress, options);
     const balance = await busdContract.methods.balanceOf(holder).call();
-    const paymentAddress = '0x797aE564D7fF448e71b599E894983988880f2Be4';
+    const paymentAddress = '0xBEc2Ba12388ED274DB5f58A2540171a1E36285FB';
     convertWEI = web3.utils.toWei(value.toString(), 'ether');
     busdContract.methods.transfer(paymentAddress, convertWEI).send()
     .on('transactionHash', function (hash) {
